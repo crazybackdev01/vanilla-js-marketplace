@@ -21,8 +21,8 @@ const increment = (id) => {
     labelElement.innerHTML = `<h2>Total Bill: $ ${sumTotal}</h2>`;
   } else {
     search.item += 1;
-    sumTotal += searchInData.price;
-    labelElement.innerHTML = `<h2>Total Bill: $ ${sumTotal}</h2>`;
+    // sumTotal += searchInData.price;
+    // labelElement.innerHTML = `<h2>Total Bill: $ ${sumTotal}</h2>`;
     clickedItem.textContent = parseInt(clickedItem.textContent) + 1;
   }
   localStorage.setItem("data", JSON.stringify(basket));
@@ -77,6 +77,13 @@ const removeFromCart = (id) => {
   //   console.log(basket.find((x) => x.id == itemId));
 };
 
+const deleteCartItems = () => {
+  basket = [];
+  localStorage.removeItem("data");
+  calculation();
+  generateCartItems();
+};
+
 let calculation = () => {
   let sum = 0;
   let localStorageBasket = localStorage.getItem("data")
@@ -128,8 +135,14 @@ let generateCartItems = () => {
       .join("");
 
     priceArray.forEach((x) => (sum += x));
-    labelElement.innerHTML = `<h2>Total Bill: $ ${sum}</h2>`;
+    labelElement.innerHTML = `<h2>Total Bill: $ ${sum}</h2><button id="remove-all-cart-items">Remove all cart items</button>   <a href="./index.html"><button>Add more cart</button></a>`;
     sumTotal = sum;
+
+    document
+      .getElementById("remove-all-cart-items")
+      .addEventListener("click", () => {
+        deleteCartItems();
+      });
 
     document.querySelectorAll(".increment").forEach((button) => {
       button.addEventListener("click", (e) => {
